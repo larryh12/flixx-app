@@ -309,6 +309,10 @@ const displayPagination = () => {
         <button class="btn btn-primary" id="next">Next</button>
         <div class="page-counter">Page ${global.search.page} of ${global.search.totalPages}</div>`;
   document.querySelector('#pagination').appendChild(div);
+  // disable prev and next on first and last page
+  if (global.search.page === 1) document.querySelector('#prev').disabled = true;
+  if (global.search.page === global.search.totalPages)
+    document.querySelector('#next').disabled = true;
 };
 
 // on search function
