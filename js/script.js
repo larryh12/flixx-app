@@ -292,10 +292,23 @@ const displaySearchResults = (results) => {
           </div>`;
     document.querySelector('#search-results').appendChild(div);
     // display heading info
-    document.querySelector('#search-results-heading').innerHTML = `
-        <h2>${results.length} of ${global.search.totalResults} results for "${global.search.term}"</h2>`;
+    document.querySelector(
+      '#search-results-heading'
+    ).innerHTML = `<h2>${results.length} of ${global.search.totalResults} results for "${global.search.term}"</h2>`;
+    displayPagination();
     toggleSpinner('hide');
   });
+};
+
+// create and display pagination for search
+const displayPagination = () => {
+  const div = document.createElement('div');
+  div.classList.add('pagination');
+  div.innerHTML = `
+        <button class="btn btn-primary" id="prev">Prev</button>
+        <button class="btn btn-primary" id="next">Next</button>
+        <div class="page-counter">Page ${global.search.page} of ${global.search.totalPages}</div>`;
+  document.querySelector('#pagination').appendChild(div);
 };
 
 // on search function
