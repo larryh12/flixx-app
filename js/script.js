@@ -35,8 +35,8 @@ const displayPopularMovies = async () => {
             </p>
           </div>`;
     document.querySelector('#popular-movies').appendChild(div);
-    toggleSpinner('hide');
   });
+  toggleSpinner('hide');
 };
 
 // display popular tv shows
@@ -61,8 +61,8 @@ const displayPopularShows = async () => {
             </p>
           </div>`;
     document.querySelector('#popular-shows').appendChild(div);
-    toggleSpinner('hide');
   });
+  toggleSpinner('hide');
 };
 
 // display movie details
@@ -228,20 +228,20 @@ const displaySlider = async () => {
         </h4>`;
 
     document.querySelector('.swiper-wrapper').appendChild(div);
-    // init the swiper library
-    initSwiper();
   });
+  // init the swiper library
+  initSwiper();
 };
 
 const initSwiper = () => {
   const swiper = new Swiper('.swiper', {
     slidesPerView: 1,
     spaceBetween: 30,
-    freeMode: true,
+    freeMode: false,
     loop: true,
     autoplay: {
       delay: 4000,
-      disableOnInteraction: false,
+      disableOnInteraction: true,
     },
     breakpoints: {
       500: {
