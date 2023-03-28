@@ -267,7 +267,7 @@ const search = async () => {
   if (global.search.term === '' || global.search.term === null) {
     showAlert('Search input is empty, please try again.');
   } else {
-    const results = await searchAPIData();
+    const { results, total_pages, page } = await searchAPIData();
     console.log(results);
   }
 };
@@ -279,6 +279,20 @@ const fetchAPIData = async (endpoint) => {
   toggleSpinner('show');
   const response = await fetch(
     `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-AU`
+  );
+
+  const data = await response.json();
+
+  return data;
+};
+
+// search from tmdb
+const searchAPIData = async (endpoint) => {
+  const API_KEY = global.api.apiKeyTMDB;
+  const API_URL = global.api.apiUrlTMDB;
+  toggleSpinner('show');
+  const response = await fetch(
+    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-AU&query=${global.search.term}`
   );
 
   const data = await response.json();
@@ -310,7 +324,7 @@ const showAlert = (message, className) => {
   document.querySelector('#alert').appendChild(alertEl);
 
   //hide alert after amount of time
-  setTimeout(() => alertEl.remove(), 3000);
+  setTimeout(() => alertEl.remove(), 1500);
 };
 
 // init app
