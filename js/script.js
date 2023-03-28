@@ -406,6 +406,42 @@ const displaySearchResults = (results) => {
   toggleSpinner('hide');
 };
 
+// display anime results
+const displayAnimeResults = (results) => {
+  // clear previous state before adding new
+  document.querySelector('#search-results').innerHTML = '';
+  document.querySelector('#search-results-heading').innerHTML = '';
+  document.querySelector('#pagination').innerHTML = '';
+  results.forEach((res) => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `<a href="${global.search.type}-details.html?id=${
+      res.mal_id
+    }">
+      ${
+        res.images.jpg.large_image_url
+          ? `<img src="${res.images.jpg.large_image_url}"`
+          : `<img src="/images/no-image.jpg"`
+      }
+        class="card-img-top"
+        alt="${res.title}"/>
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">${res.title}</h5>
+      <p class="card-text">
+        <small class="text-muted">${res.title_english}</small>
+      </p>
+    </div>`;
+    document.querySelector('#search-results').appendChild(div);
+  });
+  // display heading info
+  document.querySelector(
+    '#search-results-heading'
+  ).innerHTML = `<h2>${results.length} of ${global.search.totalResults} results for "${global.search.term}"</h2>`;
+  displayPagination();
+  toggleSpinner('hide');
+};
+
 // create and display pagination for search
 const displayPagination = () => {
   const div = document.createElement('div');
@@ -423,13 +459,23 @@ const displayPagination = () => {
   // add event listener
   document.querySelector('#next').addEventListener('click', async () => {
     global.search.page++;
-    const { results, total_pages } = await searchAPIData();
-    displaySearchResults(results);
+    if (global.search.type === 'anime') {
+      const { data } = await searchAPIJikan();
+      displayAnimeResults(data);
+    } else {
+      const { results, total_pages } = await searchAPIData();
+      displaySearchResults(results);
+    }
   });
   document.querySelector('#prev').addEventListener('click', async () => {
     global.search.page--;
-    const { results, total_pages } = await searchAPIData();
-    displaySearchResults(results);
+    if (global.search.type === 'anime') {
+      const { data } = await searchAPIJikan();
+      displayAnimeResults(data);
+    } else {
+      const { results, total_pages } = await searchAPIData();
+      displaySearchResults(results);
+    }
   });
 };
 
