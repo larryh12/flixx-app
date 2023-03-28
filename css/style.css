@@ -245,6 +245,10 @@ section h2 {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+.list-group {
+  margin-bottom: 20px;
+}
+
 /* Search */
 .search {
   padding: 60px;
@@ -358,6 +362,9 @@ section h2 {
 }
 
 @media screen and (max-width: 460px) {
+  .search {
+    padding: 10px;
+  }
   .grid {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
