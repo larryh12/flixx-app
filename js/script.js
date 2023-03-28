@@ -443,6 +443,20 @@ const search = async () => {
 
   if (global.search.term === '' || global.search.term === null) {
     showAlert('Search input is empty, please try again.', 'error');
+  } else if (global.search.type === 'anime') {
+    const { data, pagination } = await searchAPIJikan();
+    // setting global state
+    global.search.page = pagination.current_page;
+    global.search.totalPages = pagination.last_visible_page;
+    global.search.totalResults = pagination.items.total;
+
+    if (data.length === 0) {
+      showAlert('No results found, please try again.', 'success');
+      toggleSpinner('hide');
+      return;
+    } else {
+      displayAnimeResults(data);
+    }
   } else {
     const { results, total_pages, page, total_results } = await searchAPIData();
     // setting global state
@@ -493,6 +507,17 @@ const searchAPIData = async (endpoint) => {
 
   const data = await response.json();
 
+  return data;
+};
+
+// search from jikan mal
+const searchAPIJikan = async (endpont) => {
+  const API_URL = global.api.apiUrlJikan;
+  toggleSpinner('show');
+  const response = await fetch(
+    `${API_URL}anime?q=${global.search.term}&page=${global.search.page}`
+  );
+  const data = await response.json();
   return data;
 };
 
