@@ -6,6 +6,10 @@ const global = {
     page: 1,
     totalPages: 1,
   },
+  api: {
+    apiKeyTMDB: 'd806b562e36fc9c3e6d749c6dd837051',
+    apiUrlTMDB: 'https://api.themoviedb.org/3/',
+  },
 };
 
 // display popular movies
@@ -261,15 +265,17 @@ const search = async () => {
   global.search.term = urlParams.get('search-term');
 
   if (global.search.term === '' || global.search.term === null) {
-    showAlert('empty search');
+    showAlert('Search input is empty, please try again.');
   } else {
+    const results = await searchAPIData();
+    console.log(results);
   }
 };
 
 // fetch from tmdb
 const fetchAPIData = async (endpoint) => {
-  const API_KEY = 'd806b562e36fc9c3e6d749c6dd837051';
-  const API_URL = 'https://api.themoviedb.org/3/';
+  const API_KEY = global.api.apiKeyTMDB;
+  const API_URL = global.api.apiUrlTMDB;
   toggleSpinner('show');
   const response = await fetch(
     `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-AU`
