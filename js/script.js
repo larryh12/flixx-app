@@ -256,7 +256,7 @@ const initSwiper = () => {
   });
 };
 
-// display search results
+// on search function
 const search = async () => {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -265,10 +265,16 @@ const search = async () => {
   global.search.term = urlParams.get('search-term');
 
   if (global.search.term === '' || global.search.term === null) {
-    showAlert('Search input is empty, please try again.');
+    showAlert('Search input is empty, please try again.', 'error');
   } else {
     const { results, total_pages, page } = await searchAPIData();
-    console.log(results);
+    if (results.length === 0) {
+      showAlert('No results found, please try again.', 'success');
+      toggleSpinner('hide');
+      return;
+    } else {
+      displaySearchResults(results);
+    }
   }
 };
 
@@ -324,7 +330,7 @@ const showAlert = (message, className) => {
   document.querySelector('#alert').appendChild(alertEl);
 
   //hide alert after amount of time
-  setTimeout(() => alertEl.remove(), 1500);
+  setTimeout(() => alertEl.remove(), 2000);
 };
 
 // init app
