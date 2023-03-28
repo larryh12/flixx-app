@@ -10,6 +10,7 @@ const global = {
   api: {
     apiKeyTMDB: 'd806b562e36fc9c3e6d749c6dd837051',
     apiUrlTMDB: 'https://api.themoviedb.org/3/',
+    apiUrlJikan: 'https://api.jikan.moe/v4/',
   },
 };
 
@@ -61,6 +62,34 @@ const displayPopularShows = async () => {
             </p>
           </div>`;
     document.querySelector('#popular-shows').appendChild(div);
+  });
+  toggleSpinner('hide');
+};
+
+// display popular anime
+const displayPopularAnime = async () => {
+  const { data } = await fetchAPIJikan('top/anime?filter=airing');
+  data.forEach((show) => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `<a href="anime-details.html?id=${show.mal_id}">
+            ${
+              show.images.jpg.large_image_url
+                ? `<img src="${show.images.jpg.large_image_url}"`
+                : `<img src="/images/no-image.jpg"`
+            }
+              class="card-img-top"
+              alt="${show.titles[0].title}"/>
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">${show.titles[0].title}</h5>
+            <p class="card-text">
+              <small class="text-muted">${
+                show.titles[show.titles.length - 1].title
+              }</small>
+            </p>
+          </div>`;
+    document.querySelector('#popular-anime').appendChild(div);
   });
   toggleSpinner('hide');
 };
@@ -190,11 +219,6 @@ const displayShowDetails = async () => {
         </div>`;
   document.querySelector('#show-details').appendChild(div);
   toggleSpinner('hide');
-};
-
-// display popular anime
-const displayPopularAnime = () => {
-  console.log('success');
 };
 
 // display backdrop on detail pages
@@ -374,6 +398,14 @@ const fetchAPIData = async (endpoint) => {
 
   const data = await response.json();
 
+  return data;
+};
+
+const fetchAPIJikan = async (endpoint) => {
+  const API_URL = global.api.apiUrlJikan;
+  toggleSpinner('show');
+  const response = await fetch(`${API_URL}${endpoint}`);
+  const data = await response.json();
   return data;
 };
 
