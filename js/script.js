@@ -291,13 +291,13 @@ const displaySearchResults = (results) => {
             </p>
           </div>`;
     document.querySelector('#search-results').appendChild(div);
-    // display heading info
-    document.querySelector(
-      '#search-results-heading'
-    ).innerHTML = `<h2>${results.length} of ${global.search.totalResults} results for "${global.search.term}"</h2>`;
-    displayPagination();
-    toggleSpinner('hide');
   });
+  // display heading info
+  document.querySelector(
+    '#search-results-heading'
+  ).innerHTML = `<h2>${results.length} of ${global.search.totalResults} results for "${global.search.term}"</h2>`;
+  displayPagination();
+  toggleSpinner('hide');
 };
 
 // create and display pagination for search
