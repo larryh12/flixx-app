@@ -192,6 +192,11 @@ const displayShowDetails = async () => {
   toggleSpinner('hide');
 };
 
+// display popular anime
+const displayPopularAnime = () => {
+  console.log('success');
+};
+
 // display backdrop on detail pages
 const displayBackgroundImage = (type, path) => {
   const overlayDiv = document.createElement('div');
@@ -424,6 +429,9 @@ const init = () => {
       break;
     case '/shows.html':
       displayPopularShows();
+      break;
+    case '/anime.html':
+      displayPopularAnime();
       break;
     case '/movie-details.html':
       displayMovieDetails();
