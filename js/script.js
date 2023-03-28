@@ -256,6 +256,44 @@ const initSwiper = () => {
   });
 };
 
+// display search results
+const displaySearchResults = (results) => {
+  results.forEach((res) => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `<a href="${global.search.type}-details.html?id=${res.id}">
+            ${
+              res.poster_path
+                ? `<img src="https://image.tmdb.org/t/p/w500/${res.poster_path}"`
+                : `<img src="/images/no-image.jpg"`
+            }
+              class="card-img-top"
+              alt="${(() => {
+                if (global.search.type === 'movie') return res.title;
+                if (global.search.type === 'tv') return res.name;
+              })()}"/>
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">${(() => {
+              // IIFE magic wow
+              if (global.search.type === 'movie') return res.title;
+              if (global.search.type === 'tv') return res.name;
+            })()}</h5>
+            <p class="card-text">
+              <small class="text-muted">${(() => {
+                // even more IIFE magic wow
+                if (global.search.type === 'movie')
+                  return `Released: ${res.release_date}`;
+                if (global.search.type === 'tv')
+                  return `Aired: ${res.first_air_date}`;
+              })()}</small>
+            </p>
+          </div>`;
+    document.querySelector('#search-results').appendChild(div);
+    toggleSpinner('hide');
+  });
+};
+
 // on search function
 const search = async () => {
   const queryString = window.location.search;
