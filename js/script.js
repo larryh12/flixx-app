@@ -60,7 +60,8 @@ const displayMovieDetails = async () => {
   const movieID = window.location.search.split('=')[1];
   // fetch with id
   const movie = await fetchAPIData(`movie/${movieID}`);
-  console.log(movie);
+  // background image
+  displayBackgroundImage('movie', movie.backdrop_path);
   // render to dom
   const div = document.createElement('div');
   div.innerHTML = `
@@ -98,12 +99,8 @@ const displayMovieDetails = async () => {
         <div class="details-bottom">
           <h2>Movie Info</h2>
           <ul>
-            <li><span class="text-secondary">Budget:</span> $${movie.budget.toLocaleString(
-              'en-AU'
-            )}</li>
-            <li><span class="text-secondary">Revenue:</span> $${movie.revenue.toLocaleString(
-              'en-AU'
-            )}</li>
+            <li><span class="text-secondary">Budget:</span> $${movie.budget.toLocaleString()}</li>
+            <li><span class="text-secondary">Revenue:</span> $${movie.revenue.toLocaleString()}</li>
             <li><span class="text-secondary">Runtime:</span> ${
               movie.runtime
             } minutues</li>
@@ -116,6 +113,26 @@ const displayMovieDetails = async () => {
         </div>`;
   document.querySelector('#movie-details').appendChild(div);
   toggleSpinner('hide');
+};
+
+// display backdrop on detail pages
+const displayBackgroundImage = (type, path) => {
+  const overlayDiv = document.createElement('div');
+  overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${path})`;
+  overlayDiv.style.backgroundSize = 'cover';
+  overlayDiv.style.backgroundPosition = 'center';
+  overlayDiv.style.backgroundRepeat = 'no-repeat';
+  overlayDiv.style.height = '100vh';
+  overlayDiv.style.width = '100vw';
+  overlayDiv.style.position = 'absolute';
+  overlayDiv.style.top = '0';
+  overlayDiv.style.left = '0';
+  overlayDiv.style.zIndex = '-1';
+  overlayDiv.style.opacity = '0.1';
+
+  type === 'movie'
+    ? document.querySelector('#movie-details').appendChild(overlayDiv)
+    : document.querySelector('#show-details').appendChild(overlayDiv);
 };
 
 // fetch from tmdb
