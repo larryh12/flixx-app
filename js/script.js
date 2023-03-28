@@ -54,6 +54,66 @@ const displayPopularShows = async () => {
   });
 };
 
+// display movie details
+const displayMovieDetails = async () => {
+  // get the id from the url
+  const movieID = window.location.search.split('=')[1];
+  // fetch with id
+  const movie = await fetchAPIData(`movie/${movieID}`);
+  // render to dom
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="details-top">
+          <div>
+            <img ${
+              movie.poster_path
+                ? `src="https://image.tmdb.org/t/p/w500${movie.poster_path}"`
+                : `src="images/no-image.jpg"`
+            }
+              class="card-img-top"
+              alt="${movie.title}"
+            />
+          </div>
+          <div>
+            <h2>${movie.title}</h2>
+            <p>
+              <i class="fas fa-star text-primary"></i>
+              ${movie.vote_average.toFixed(1)}
+            </p>
+            <p class="text-muted">Release Date: ${movie.release_date}</p>
+            <p>${movie.overview}</p>
+            <h5>Genres</h5>
+            <ul class="list-group">
+              ${movie.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
+            </ul>
+            <a href="${
+              movie.homepage
+            }" target="_blank" class="btn">Visit Movie Homepage</a>
+          </div>
+        </div>
+        <div class="details-bottom">
+          <h2>Movie Info</h2>
+          <ul>
+            <li><span class="text-secondary">Budget:</span> $${movie.budget.toLocaleString(
+              'en-AU'
+            )}</li>
+            <li><span class="text-secondary">Revenue:</span> $${movie.revenue.toLocaleString(
+              'en-AU'
+            )}</li>
+            <li><span class="text-secondary">Runtime:</span> ${
+              movie.runtime
+            } minutues</li>
+            <li><span class="text-secondary">Status:</span> ${movie.status}</li>
+          </ul>
+          <h4>Production Companies</h4>
+          <div class="list-group">${movie.production_companies
+            .map((company) => `<span>${company.name}</span>`)
+            .join(', ')}</div>
+        </div>`;
+  document.querySelector('#movie-details').appendChild(div);
+  toggleSpinner('hide');
+};
+
 // fetch from tmdb
 const fetchAPIData = async (endpoint) => {
   const API_KEY = 'd806b562e36fc9c3e6d749c6dd837051';
@@ -68,6 +128,7 @@ const fetchAPIData = async (endpoint) => {
   return data;
 };
 
+// spinning loading toggle
 const toggleSpinner = (state) => {
   state === 'show' && document.querySelector('.spinner').classList.add('show');
   state === 'hide' &&
@@ -95,7 +156,7 @@ const init = () => {
       displayPopularShows();
       break;
     case '/movie-details.html':
-      console.log('Movie Details');
+      displayMovieDetails();
       break;
     case '/tv-details.html':
       console.log('TV Details');
