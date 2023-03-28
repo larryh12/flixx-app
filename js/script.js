@@ -60,6 +60,7 @@ const displayMovieDetails = async () => {
   const movieID = window.location.search.split('=')[1];
   // fetch with id
   const movie = await fetchAPIData(`movie/${movieID}`);
+  console.log(movie);
   // render to dom
   const div = document.createElement('div');
   div.innerHTML = `
@@ -78,7 +79,7 @@ const displayMovieDetails = async () => {
             <h2>${movie.title}</h2>
             <p>
               <i class="fas fa-star text-primary"></i>
-              ${movie.vote_average.toFixed(1)}
+              ${movie.vote_average.toFixed(1)} / 10
             </p>
             <p class="text-muted">Release Date: ${movie.release_date}</p>
             <p>${movie.overview}</p>
@@ -88,7 +89,10 @@ const displayMovieDetails = async () => {
             </ul>
             <a href="${
               movie.homepage
-            }" target="_blank" class="btn">Visit Movie Homepage</a>
+            }" target="_blank" class="btn">Visit Homepage</a>
+            <a href="https://www.imdb.com/title/${
+              movie.imdb_id
+            }" target="_blank" class="btn">View on IMDb</a>
           </div>
         </div>
         <div class="details-bottom">
