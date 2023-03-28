@@ -229,61 +229,62 @@ const displayAnimeDetails = async () => {
   const show = await fetchAPIJikan(`anime/${showID}/full`);
   // background image
   displayBackgroundImage('anime', show.data.trailer.images.maximum_image_url);
-  // render to dom
-  // const div = document.createElement('div');
-  // div.innerHTML = `
-  //   <div class="details-top">
-  //         <div>
-  //           <img ${
-  //             show.poster_path
-  //               ? `src="https://image.tmdb.org/t/p/w500${show.poster_path}"`
-  //               : `src="images/no-image.jpg"`
-  //           }
-  //             class="card-img-top"
-  //             alt="${show.name}"
-  //           />
-  //         </div>
-  //         <div>
-  //           <h2>${show.name}</h2>
-  //           <p>
-  //             <i class="fas fa-star text-primary"></i>
-  //             ${show.vote_average.toFixed(1)} / 10
-  //           </p>
-  //           <p class="text-muted">Last Air Date: ${show.last_air_date}</p>
-  //           <p>${show.overview}</p>
-  //           <h5>Genres</h5>
-  //           <ul class="list-group">
-  //             ${show.genres.map((genre) => `<li>${genre.name}</li>`).join('')}
-  //           </ul>
-  //           <a href="${
-  //             show.homepage
-  //           }" target="_blank" class="btn">Visit Homepage</a>
-  //           <a href="https://www.themoviedb.org/tv/${
-  //             show.id
-  //           }" target="_blank" class="btn">View on TMDB</a>
-  //         </div>
-  //       </div>
-  //       <div class="details-bottom">
-  //         <h2>Show Info</h2>
-  //         <ul>
-  //           <li><span class="text-secondary">Number of Episodes:</span> ${
-  //             show.number_of_episodes
-  //           }</li>
-  //           <li><span class="text-secondary">Last Episode to Air:</span> ${
-  //             show.last_episode_to_air.name
-  //           }</li>
-  //           <li><span class="text-secondary">Status:</span> ${show.status}</li>
-  //         </ul>
-  //         <h4>Production Companies</h4>
-  //         <div class="list-group">${show.production_companies
-  //           .map((company) => `<span>${company.name}</span>`)
-  //           .join(', ')}</div>
-  //           <h4>Networks</h4>
-  //         <div class="list-group">${show.networks
-  //           .map((network) => `<span>${network.name}</span>`)
-  //           .join(', ')}</div>
-  //       </div>`;
-  // document.querySelector('#show-details').appendChild(div);
+  //render to dom
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="details-top">
+          <div>
+            <img ${
+              show.data.images.jpg.large_image_url
+                ? `src="${show.data.images.jpg.large_image_url}"`
+                : `src="images/no-image.jpg"`
+            }
+              class="card-img-top"
+              alt="${show.data.titles[0].title}"
+            />
+          </div>
+          <div>
+            <h2>${show.data.titles[0].title}</h2>
+            <p>
+              <i class="fas fa-star text-primary"></i>
+              ${show.data.score.toFixed(1)} / 10
+            </p>
+            <p class="text-muted">${show.data.title_english}</p>
+            <p>${show.data.synopsis}</p>
+            <h5>Genres</h5>
+            <ul class="list-group">
+              ${show.data.genres
+                .map((genre) => `<li>${genre.name}</li>`)
+                .join('')}
+            </ul>
+            <a href="${
+              show.data.url
+            }" target="_blank" class="btn">View on MyAnimeList</a>
+          </div>
+        </div>
+        <div class="details-bottom">
+          <h2>Show Info</h2>
+          <ul>
+            <li><span class="text-secondary">Number of Episodes:</span> ${
+              show.data.episodes
+            }</li>
+            <li><span class="text-secondary">Aired from:</span> ${
+              show.data.aired.string
+            }</li>
+            <li><span class="text-secondary">Status:</span> ${
+              show.data.status
+            }</li>
+          </ul>
+          <h4>Producers:</h4>
+          <div class="list-group">${show.data.producers
+            .map((company) => `<span>${company.name}</span>`)
+            .join(', ')}</div>
+          <h4>Studios:</h4>
+          <div class="list-group">${show.data.studios
+            .map((studio) => `<span>${studio.name}</span>`)
+            .join(', ')}</div>
+        </div>`;
+  document.querySelector('#anime-details').appendChild(div);
   toggleSpinner('hide');
 };
 
