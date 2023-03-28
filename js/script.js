@@ -5,6 +5,7 @@ const global = {
     type: '',
     page: 1,
     totalPages: 1,
+    totalResults: 0,
   },
   api: {
     apiKeyTMDB: 'd806b562e36fc9c3e6d749c6dd837051',
@@ -290,6 +291,9 @@ const displaySearchResults = (results) => {
             </p>
           </div>`;
     document.querySelector('#search-results').appendChild(div);
+    // display heading info
+    document.querySelector('#search-results-heading').innerHTML = `
+        <h2>${results.length} of ${global.search.totalResults} results for "${global.search.term}"</h2>`;
     toggleSpinner('hide');
   });
 };
@@ -305,7 +309,12 @@ const search = async () => {
   if (global.search.term === '' || global.search.term === null) {
     showAlert('Search input is empty, please try again.', 'error');
   } else {
-    const { results, total_pages, page } = await searchAPIData();
+    const { results, total_pages, page, total_results } = await searchAPIData();
+    // setting global state
+    global.search.page = page;
+    global.search.totalPages = total_pages;
+    global.search.totalResults = total_results;
+
     if (results.length === 0) {
       showAlert('No results found, please try again.', 'success');
       toggleSpinner('hide');
