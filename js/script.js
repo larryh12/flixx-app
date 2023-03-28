@@ -259,6 +259,10 @@ const initSwiper = () => {
 
 // display search results
 const displaySearchResults = (results) => {
+  // clear previous state before adding new
+  document.querySelector('#search-results').innerHTML = '';
+  document.querySelector('#search-results-heading').innerHTML = '';
+  document.querySelector('#pagination').innerHTML = '';
   results.forEach((res) => {
     const div = document.createElement('div');
     div.classList.add('card');
@@ -313,6 +317,18 @@ const displayPagination = () => {
   if (global.search.page === 1) document.querySelector('#prev').disabled = true;
   if (global.search.page === global.search.totalPages)
     document.querySelector('#next').disabled = true;
+
+  // add event listener
+  document.querySelector('#next').addEventListener('click', async () => {
+    global.search.page++;
+    const { results, total_pages } = await searchAPIData();
+    displaySearchResults(results);
+  });
+  document.querySelector('#prev').addEventListener('click', async () => {
+    global.search.page--;
+    const { results, total_pages } = await searchAPIData();
+    displaySearchResults(results);
+  });
 };
 
 // on search function
@@ -362,7 +378,7 @@ const searchAPIData = async (endpoint) => {
   const API_URL = global.api.apiUrlTMDB;
   toggleSpinner('show');
   const response = await fetch(
-    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-AU&query=${global.search.term}`
+    `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-AU&query=${global.search.term}&page=${global.search.page}`
   );
 
   const data = await response.json();
