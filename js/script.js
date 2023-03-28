@@ -561,7 +561,7 @@ const searchAPIJikan = async (endpont) => {
   const API_URL = global.api.apiUrlJikan;
   toggleSpinner('show');
   const response = await fetch(
-    `${API_URL}anime?q=${global.search.term}&page=${global.search.page}`
+    `${API_URL}anime?q=${global.search.term}&order_by=members&sort=desc&page=${global.search.page}`
   );
   const data = await response.json();
   return data;
