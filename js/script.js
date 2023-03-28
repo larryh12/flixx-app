@@ -24,6 +24,7 @@ const displayPopularMovies = async () => {
             </p>
           </div>`;
     document.querySelector('#popular-movies').appendChild(div);
+    toggleSpinner('hide');
   });
 };
 
@@ -31,7 +32,7 @@ const displayPopularMovies = async () => {
 const fetchAPIData = async (endpoint) => {
   const API_KEY = 'd806b562e36fc9c3e6d749c6dd837051';
   const API_URL = 'https://api.themoviedb.org/3/';
-
+  toggleSpinner('show');
   const response = await fetch(
     `${API_URL}${endpoint}?api_key=${API_KEY}&language=en-AU`
   );
@@ -39,6 +40,12 @@ const fetchAPIData = async (endpoint) => {
   const data = await response.json();
 
   return data;
+};
+
+const toggleSpinner = (state) => {
+  state === 'show' && document.querySelector('.spinner').classList.add('show');
+  state === 'hide' &&
+    document.querySelector('.spinner').classList.remove('show');
 };
 
 // highlight active link
