@@ -10,6 +10,7 @@ const global = {
   api: {
     apiKeyTMDB: 'd806b562e36fc9c3e6d749c6dd837051',
     apiUrlTMDB: 'https://api.themoviedb.org/3/',
+    apiUrlJikan: 'https://api.jikan.moe/v4/',
   },
 };
 
@@ -61,6 +62,34 @@ const displayPopularShows = async () => {
             </p>
           </div>`;
     document.querySelector('#popular-shows').appendChild(div);
+  });
+  toggleSpinner('hide');
+};
+
+// display popular anime
+const displayPopularAnime = async () => {
+  const { data } = await fetchAPIJikan('top/anime?filter=airing');
+  data.forEach((show) => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `<a href="anime-details.html?id=${show.mal_id}">
+            ${
+              show.images.jpg.large_image_url
+                ? `<img src="${show.images.jpg.large_image_url}"`
+                : `<img src="/images/no-image.jpg"`
+            }
+              class="card-img-top"
+              alt="${show.titles[0].title}"/>
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">${show.titles[0].title}</h5>
+            <p class="card-text">
+              <small class="text-muted">${
+                show.titles[show.titles.length - 1].title
+              }</small>
+            </p>
+          </div>`;
+    document.querySelector('#popular-anime').appendChild(div);
   });
   toggleSpinner('hide');
 };
@@ -192,10 +221,80 @@ const displayShowDetails = async () => {
   toggleSpinner('hide');
 };
 
+// display anime details
+const displayAnimeDetails = async () => {
+  // get the id from the url
+  const showID = window.location.search.split('=')[1];
+  // fetch with id
+  const show = await fetchAPIJikan(`anime/${showID}/full`);
+  // background image
+  displayBackgroundImage('anime', show.data.trailer.images.maximum_image_url);
+  //render to dom
+  const div = document.createElement('div');
+  div.innerHTML = `
+    <div class="details-top">
+          <div>
+            <img ${
+              show.data.images.jpg.large_image_url
+                ? `src="${show.data.images.jpg.large_image_url}"`
+                : `src="images/no-image.jpg"`
+            }
+              class="card-img-top"
+              alt="${show.data.titles[0].title}"
+            />
+          </div>
+          <div>
+            <h2>${show.data.titles[0].title}</h2>
+            <p>
+              <i class="fas fa-star text-primary"></i>
+              ${show.data.score.toFixed(1)} / 10
+            </p>
+            <p class="text-muted">${show.data.title_english}</p>
+            <p>${show.data.synopsis}</p>
+            <h5>Genres</h5>
+            <ul class="list-group">
+              ${show.data.genres
+                .map((genre) => `<li>${genre.name}</li>`)
+                .join('')}
+            </ul>
+            <a href="${
+              show.data.url
+            }" target="_blank" class="btn">View on MyAnimeList</a>
+          </div>
+        </div>
+        <div class="details-bottom">
+          <h2>Show Info</h2>
+          <ul>
+            <li><span class="text-secondary">Number of Episodes:</span> ${
+              show.data.episodes
+            }</li>
+            <li><span class="text-secondary">Aired from:</span> ${
+              show.data.aired.string
+            }</li>
+            <li><span class="text-secondary">Status:</span> ${
+              show.data.status
+            }</li>
+          </ul>
+          <h4>Producers:</h4>
+          <div class="list-group">${show.data.producers
+            .map((company) => `<span>${company.name}</span>`)
+            .join(', ')}</div>
+          <h4>Studios:</h4>
+          <div class="list-group">${show.data.studios
+            .map((studio) => `<span>${studio.name}</span>`)
+            .join(', ')}</div>
+        </div>`;
+  document.querySelector('#anime-details').appendChild(div);
+  toggleSpinner('hide');
+};
+
 // display backdrop on detail pages
 const displayBackgroundImage = (type, path) => {
   const overlayDiv = document.createElement('div');
-  overlayDiv.style.backgroundImage = `url(https://image.tmdb.org/t/p/original/${path})`;
+  overlayDiv.style.backgroundImage =
+    type === 'anime'
+      ? `url(${path})`
+      : `url(https://image.tmdb.org/t/p/original/${path})`;
   overlayDiv.style.backgroundSize = 'cover';
   overlayDiv.style.backgroundPosition = 'center';
   overlayDiv.style.backgroundRepeat = 'no-repeat';
@@ -207,9 +306,12 @@ const displayBackgroundImage = (type, path) => {
   overlayDiv.style.zIndex = '-1';
   overlayDiv.style.opacity = '0.1';
 
-  type === 'movie'
-    ? document.querySelector('#movie-details').appendChild(overlayDiv)
-    : document.querySelector('#show-details').appendChild(overlayDiv);
+  type === 'movie' &&
+    document.querySelector('#movie-details').appendChild(overlayDiv);
+  type === 'tv' &&
+    document.querySelector('#show-details').appendChild(overlayDiv);
+  type === 'anime' &&
+    document.querySelector('#anime-details').appendChild(overlayDiv);
 };
 
 // display slider movie
@@ -304,6 +406,42 @@ const displaySearchResults = (results) => {
   toggleSpinner('hide');
 };
 
+// display anime results
+const displayAnimeResults = (results) => {
+  // clear previous state before adding new
+  document.querySelector('#search-results').innerHTML = '';
+  document.querySelector('#search-results-heading').innerHTML = '';
+  document.querySelector('#pagination').innerHTML = '';
+  results.forEach((res) => {
+    const div = document.createElement('div');
+    div.classList.add('card');
+    div.innerHTML = `<a href="${global.search.type}-details.html?id=${
+      res.mal_id
+    }">
+      ${
+        res.images.jpg.large_image_url
+          ? `<img src="${res.images.jpg.large_image_url}"`
+          : `<img src="/images/no-image.jpg"`
+      }
+        class="card-img-top"
+        alt="${res.title}"/>
+    </a>
+    <div class="card-body">
+      <h5 class="card-title">${res.title}</h5>
+      <p class="card-text">
+        <small class="text-muted">${res.title_english}</small>
+      </p>
+    </div>`;
+    document.querySelector('#search-results').appendChild(div);
+  });
+  // display heading info
+  document.querySelector(
+    '#search-results-heading'
+  ).innerHTML = `<h2>${results.length} of ${global.search.totalResults} results for "${global.search.term}"</h2>`;
+  displayPagination();
+  toggleSpinner('hide');
+};
+
 // create and display pagination for search
 const displayPagination = () => {
   const div = document.createElement('div');
@@ -321,13 +459,23 @@ const displayPagination = () => {
   // add event listener
   document.querySelector('#next').addEventListener('click', async () => {
     global.search.page++;
-    const { results, total_pages } = await searchAPIData();
-    displaySearchResults(results);
+    if (global.search.type === 'anime') {
+      const { data } = await searchAPIJikan();
+      displayAnimeResults(data);
+    } else {
+      const { results, total_pages } = await searchAPIData();
+      displaySearchResults(results);
+    }
   });
   document.querySelector('#prev').addEventListener('click', async () => {
     global.search.page--;
-    const { results, total_pages } = await searchAPIData();
-    displaySearchResults(results);
+    if (global.search.type === 'anime') {
+      const { data } = await searchAPIJikan();
+      displayAnimeResults(data);
+    } else {
+      const { results, total_pages } = await searchAPIData();
+      displaySearchResults(results);
+    }
   });
 };
 
@@ -341,6 +489,20 @@ const search = async () => {
 
   if (global.search.term === '' || global.search.term === null) {
     showAlert('Search input is empty, please try again.', 'error');
+  } else if (global.search.type === 'anime') {
+    const { data, pagination } = await searchAPIJikan();
+    // setting global state
+    global.search.page = pagination.current_page;
+    global.search.totalPages = pagination.last_visible_page;
+    global.search.totalResults = pagination.items.total;
+
+    if (data.length === 0) {
+      showAlert('No results found, please try again.', 'success');
+      toggleSpinner('hide');
+      return;
+    } else {
+      displayAnimeResults(data);
+    }
   } else {
     const { results, total_pages, page, total_results } = await searchAPIData();
     // setting global state
@@ -372,6 +534,14 @@ const fetchAPIData = async (endpoint) => {
   return data;
 };
 
+const fetchAPIJikan = async (endpoint) => {
+  const API_URL = global.api.apiUrlJikan;
+  toggleSpinner('show');
+  const response = await fetch(`${API_URL}${endpoint}`);
+  const data = await response.json();
+  return data;
+};
+
 // search from tmdb
 const searchAPIData = async (endpoint) => {
   const API_KEY = global.api.apiKeyTMDB;
@@ -383,6 +553,17 @@ const searchAPIData = async (endpoint) => {
 
   const data = await response.json();
 
+  return data;
+};
+
+// search from jikan mal
+const searchAPIJikan = async (endpont) => {
+  const API_URL = global.api.apiUrlJikan;
+  toggleSpinner('show');
+  const response = await fetch(
+    `${API_URL}anime?q=${global.search.term}&page=${global.search.page}`
+  );
+  const data = await response.json();
   return data;
 };
 
@@ -425,11 +606,17 @@ const init = () => {
     case '/shows.html':
       displayPopularShows();
       break;
+    case '/anime.html':
+      displayPopularAnime();
+      break;
     case '/movie-details.html':
       displayMovieDetails();
       break;
     case '/tv-details.html':
       displayShowDetails();
+      break;
+    case '/anime-details.html':
+      displayAnimeDetails();
       break;
     case '/search.html':
       search();
