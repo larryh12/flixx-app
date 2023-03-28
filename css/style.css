@@ -337,3 +337,35 @@ section h2 {
 .error {
   background: red;
 }
+
+@media screen and (max-width: 660px) {
+  .details-top {
+    flex-direction: column;
+  }
+  .details-top img {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .details-top img {
+    margin: 0;
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  .card-body {
+    font-size: 18px;
+  }
+  .details-top img {
+    margin: 0;
+    padding: 20px;
+  }
+}
