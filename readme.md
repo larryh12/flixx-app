@@ -2,9 +2,9 @@
 
 A front-end web client for trending Movie, TV Show, and Anime information, built with vanilla JavaScript.
 
-Utilising [The Movie Database (TMDB)](https://www.themoviedb.org/) [`REST API v3`](https://developers.themoviedb.org/3) and [Jikan](https://jikan.moe/) [`REST API v4`](https://docs.api.jikan.moe/) - _an unofficial [MyAnimeList (MAL)](https://myanimelist.net/) API_.
+Utilising The Movie Database (TMDB) [REST API v3](https://developers.themoviedb.org/3) and Jikan [REST API v4](https://docs.api.jikan.moe/) - _an unofficial [MyAnimeList (MAL)](https://myanimelist.net/) API_.
 
-See it live on [Netlify](https://coruscating-pie-82fa94.netlify.app/).
+See it live [here](https://flixx-app-larryh12.vercel.app/).
 
 <img src='docs/thumbnail.jpg'/>
 
