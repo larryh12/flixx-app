@@ -1,6 +1,6 @@
 # FLIXX
 
-<img src='docs/cover.jpg'/>
+<img src='docs/thumbnail.jpg'/>
 
 An interactive web app for trending Movie, TV Show, and Anime info from TheMovieDB and MyAnimeList, built with vanilla HTML, CSS, and JavaScript.
 
