@@ -1,12 +1,12 @@
 # FLIXX
 
-A front-end web client for trending Movie, TV Show, and Anime information, built with vanilla JavaScript.
-
-Utilising The Movie Database (TMDB) [REST API v3](https://developers.themoviedb.org/3) and Jikan [REST API v4](https://docs.api.jikan.moe/) - _an unofficial [MyAnimeList (MAL)](https://myanimelist.net/) API_.
-
-See it live [here](https://flixx-app-larryh12.vercel.app/).
-
 <img src='docs/thumbnail.jpg'/>
+
+An interactive web app for trending Movie, TV Show, and Anime info from TheMovieDB and MyAnimeList, built with vanilla HTML, CSS, and JavaScript.
+
+Utilising [TMDB REST API v3](https://developers.themoviedb.org/3) and [Jikan REST API v4](https://docs.api.jikan.moe/) - _unofficial MyAnimeList API_.
+
+**See it [LIVE](https://flixx-app-larryh12.vercel.app/)** 👈
 
 ### Main Features
 
@@ -104,6 +104,6 @@ See it live [here](https://flixx-app-larryh12.vercel.app/).
 <details>
 <summary>Credits</summary>
 
-[@bradtraversy](https://github.com/bradtraversy) [Modern JavaScript 2.0 Course](https://www.traversymedia.com/modern-javascript-2-0)
+[@bradtraversy GitHub Repo](https://github.com/bradtraversy/flixx-app)
 
 </details>
