@@ -2,9 +2,9 @@
 
 <img src='docs/thumbnail.png'/>
 
-An interactive web app for trending Movie, TV Show, and Anime info from TheMovieDB and MyAnimeList, built with vanilla HTML, CSS, and JavaScript.
+An interactive web app for trending Movie, TV Show, and Anime info from TheMovieDB and MyAnimeList, built with vanilla HTML, CSS, JavaScript, and REST API.
 
-Utilising [TMDB REST API v3](https://developers.themoviedb.org/3) and [Jikan REST API v4](https://docs.api.jikan.moe/) - _unofficial MyAnimeList API_.
+Utilising [TMDB API v3](https://developers.themoviedb.org/3) and [Jikan API v4](https://docs.api.jikan.moe/) - _unofficial MyAnimeList API_.
 
 **See it [LIVE](https://flixx-larryh12.vercel.app/)** 👈
 
