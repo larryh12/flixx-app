@@ -1,7 +1,44 @@
 # FLIXX
 
-![og](docs/_og.png)
+Trending Movies, TV Shows, Anime Info.
 
----
+## Previews
 
-## [Read more here](https://larryh12.notion.site/1ba2fc0093404e27b9a32e969e30a95e)
+<figure>
+  <img src="docs/_og.png" alt="Sample Image">
+</figure>
+
+<figure>
+  <figcaption>Movies section</figcaption>
+  <img src="docs/screen_01.png" alt="Sample Image">
+</figure>
+
+<figure>
+  <figcaption>Anime section</figcaption>
+  <img src="docs/screen_02.png" alt="Sample Image">
+</figure>
+
+<figure>
+  <figcaption>Movie page</figcaption>
+  <img src="docs/screen_03.png" alt="Sample Image">
+</figure>
+
+<figure>
+  <figcaption>Anime page</figcaption>
+  <img src="docs/screen_04.png" alt="Sample Image">
+</figure>
+
+<figure>
+  <figcaption>Title search</figcaption>
+  <img src="docs/screen_05.webp" alt="Sample Image">
+</figure>
+
+<figure>
+  <figcaption>TV search result</figcaption>
+  <img src="docs/screen_06.png" alt="Sample Image">
+</figure>
+
+<figure>
+  <figcaption>Anime search result</figcaption>
+  <img src="docs/screen_07.png" alt="Sample Image">
+</figure>
